@@ -26,8 +26,8 @@ The *SourceCodeGenerator* will replace automatically replace the directory path 
 Usually we name the database objects in a different way comparing we name the java objects, with the custom config file, you can control how the database object name are converted to the java object name.Here is a config examle
 ```
 name {
-  separator = ""
-  table.prefix = ""
-  column.prefix = ""
+  separator = "T_APP"
+  table.prefix = "F"
+  column.prefix = "_"
 }
 ```
