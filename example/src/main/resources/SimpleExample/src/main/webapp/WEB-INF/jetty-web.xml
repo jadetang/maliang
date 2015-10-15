@@ -1,0 +1,29 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0"  encoding="UTF-8"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+
+<!-- ==================================================================
+Configure and deploy the test web application in ${symbol_dollar}(jetty.home)/webapps/test
+
+Note. If this file did not exist or used a context path other that /test
+then the default configuration of jetty.xml would discover the test
+webapplication with a WebAppDeployer.  By specifying a context in this
+directory, additional configuration may be specified and hot deployments
+detected.
+===================================================================== -->
+
+
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <Set name="contextPath">/</Set>
+    <Set name="maxFormContentSize">200000</Set>
+    <Set name="extractWAR">true</Set>
+    <Set name="copyWebDir">false</Set>
+    <Set name="virtualHosts">
+        <Array type="String">
+            <Item>127.0.0.1</Item>
+            <Item>localhost</Item>
+        </Array>
+    </Set>
+</Configure>

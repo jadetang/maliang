@@ -1,0 +1,5 @@
+CREATE TABLE user (
+  age INT,
+  NAME VARCHAR(32),
+  sex VARCHAR(32)
+)

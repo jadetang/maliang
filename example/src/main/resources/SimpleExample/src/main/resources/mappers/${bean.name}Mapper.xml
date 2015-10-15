@@ -1,0 +1,66 @@
+#set( $empty = '' )
+#define( $beanClass )${package}.model.${bean.name}#end
+#define( $daoClass )${config.basePackage}.dao.${bean.name}Dao#end
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="$daoClass">
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="Base_Column_List">
+    #foreach ( $relation in ${relations.getRelations()} )
+    ${relation.column.name} as ${StringUtil.lowerFirstLetter(${relation.field.name})}#if($foreach.hasNext),#end$empty
+    #end
+</sql>
+
+    <sql id="Base_Column_Where">
+        <where>
+            #foreach ( $relation in ${relations.getRelations()} )
+<if test="${StringUtil.lowerFirstLetter(${relation.field.name})}!=null" >
+                and ${relation.column.name} = #{${StringUtil.lowerFirstLetter(${relation.field.name})}}
+            </if>
+            #end$empty
+        </where>
+    </sql>
+
+    <select id="selectAll" resultType="$beanClass">
+        select <include refid="Base_Column_List" />from ${table.name}
+    </select>
+
+
+    <select id="select" parameterType="$beanClass" resultType="$beanClass" >
+        select <include refid="Base_Column_List" /> from ${table.name}
+        <include refid="Base_Column_Where"/>
+    </select>
+
+    <delete id="delete" parameterType="$beanClass">
+        delete from ${table.name}
+        <include refid="Base_Column_Where"/>
+    </delete>
+
+    <update id="update" parameterType="$beanClass">
+        UPDATE ${table.name} SET
+    #foreach ( $relation in ${relations.getRelations()} )
+    <if test="${StringUtil.lowerFirstLetter(${relation.field.name})}!=null" >
+            ${relation.column.name}=#{${StringUtil.lowerFirstLetter(${relation.field.name})},jdbyType=${relation.column.type}},
+        </if>
+    #end
+    <include refid="Base_Column_Where"/>
+    </update>
+
+
+    <insert id="insert" parameterType="$beanClass">
+        <![CDATA[
+        INSERT INTO
+        ${table.name} (
+    #foreach ( $column in ${table.columns} )
+        ${column.name} #if($foreach.hasNext),#end$empty
+    #end
+        ) VALUES (
+    #foreach ( $relation in ${relations.getRelations()} )
+        ${relation.column.name}=#{${StringUtil.lowerFirstLetter(${relation.field.name})},jdbyType=${relation.column.type}}#if($foreach.hasNext),#end$empty
+    #end
+        )
+        ]]>
+    </insert>
+
+</mapper>

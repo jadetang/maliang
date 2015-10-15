@@ -1,0 +1,245 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.meizu.base</groupId>
+        <artifactId>parent.war</artifactId>
+        <version>2.2.1</version>
+    </parent>
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+    <name>${artifactId}</name>
+    <packaging>war</packaging>
+    <url>http://maven.apache.org</url>
+
+
+    <dependencies>
+        <!-- meizu-->
+        <dependency>
+            <groupId>com.meizu.framework</groupId>
+            <artifactId>framework-service</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <!-- meizu end-->
+
+
+        <!--spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javaee</groupId>
+            <artifactId>javaee</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- spring end -->
+
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.2.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-tx</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.github.miemiedev</groupId>
+            <artifactId>mybatis-paginator</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <!-- mybatis end-->
+
+
+        <!-- commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+        <!-- commons end-->
+
+        <!-- log -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.log4jdbc</groupId>
+            <artifactId>log4jdbc</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- log end -->
+
+
+        <!-- json -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+        <!-- json end-->
+
+
+        <!-- database -->
+        <dependency>
+            <groupId>com.jolbox</groupId>
+            <artifactId>bonecp</artifactId>
+            <version>0.8.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql-connector-java</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.22</version>
+        </dependency>
+        <!-- database end -->
+
+
+        <!-- test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- test end-->
+
+
+    </dependencies>
+
+
+    <profiles>
+        <profile>
+            <id>env.develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-ant-plugin</artifactId>
+                        <configuration>
+                            <target>
+                                <echo>combining js...</echo>
+                                <!--开发环境只做合并操作 -->
+                                <!--合并js 文件 -->
+                                <concat destfile="${project.build.directory}/${project.artifactId}-${project.version}/resources/common/js/MZPub-flyme0129.js"
+                                        fixlastline="yes" encoding="UTF-8" outputencoding="UTF-8">
+                                    <filelist dir="${project.build.directory}/${project.artifactId}-${project.version}"
+                                              files="resources/common/js/jquery.extend.js                                             resources/common/js/jquery.elements.js                                             resources/common/js/zztips.js"/>
+                                </concat>
+
+                                <!--合并css 文件 -->
+                                <concat destfile="${project.build.directory}/${project.artifactId}-${project.version}/resources/common/css/default/control-flyme.css"
+                                        fixlastline="yes" encoding="UTF-8" outputencoding="UTF-8">
+                                    <filelist dir="${project.build.directory}/${project.artifactId}-${project.version}"
+                                              files="resources/common/css/default/flymebase.css                                             resources/common/css/default/elements.css"/>
+                                </concat>
+                            </target>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>env.production</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-ant-plugin</artifactId>
+                        <configuration>
+                            <target>
+                                <echo>combining js...</echo>
+                                <!--开发环境只做合并操作 -->
+                                <!--合并js 文件 -->
+                                <concat destfile="${project.build.directory}/${project.artifactId}-${project.version}/resources/common/js/MZPub-flyme0129.js"
+                                        fixlastline="yes" encoding="UTF-8" outputencoding="UTF-8">
+                                    <filelist dir="${project.build.directory}/${project.artifactId}-${project.version}"
+                                              files="resources/common/js/jquery.extend.js                                             resources/common/js/jquery.elements.js                                             resources/common/js/zztips.js"/>
+                                </concat>
+
+                                <!--合并css 文件 -->
+                                <concat destfile="${project.build.directory}/${project.artifactId}-${project.version}/resources/common/css/default/control-flyme.css"
+                                        fixlastline="yes" encoding="UTF-8" outputencoding="UTF-8">
+                                    <filelist dir="${project.build.directory}/${project.artifactId}-${project.version}"
+                                              files="resources/common/css/default/flymebase.css                                             resources/common/css/default/elements.css"/>
+                                </concat>
+                                <compress linebreak="150" warn="false" munge="false" charset="UTF-8" skipError="false"
+                                          preserveallsemicolons="true"
+                                          outputfolder="${project.build.directory}/${project.artifactId}-${project.version}/resources">
+                                    <fileset
+                                            dir="${project.build.directory}/${project.artifactId}-${project.version}/resources">
+                                        <include name="**/*.js"/>
+                                    </fileset>
+                                </compress>
+                                <!--压缩css 文件 -->
+                                <compress linebreak="8000" warn="false" munge="yes" charset="UTF-8"
+                                          preserveallsemicolons="true" disableOptimizations="true"
+                                          outputfolder="${project.build.directory}/${project.artifactId}-${project.version}/resources">
+                                    <fileset
+                                            dir="${project.build.directory}/${project.artifactId}-${project.version}/resources">
+                                        <include name="**/*.css"/>
+                                    </fileset>
+                                </compress>
+                                <!-- 打包静态资源，单独部署CDN -->
+                                <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-resources.zip">
+                                    <zipfileset
+                                            dir="${project.build.directory}/${project.artifactId}-${project.version}/resources"
+                                            prefix="resources"/>
+                                </zip>
+                            </target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>rpm-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

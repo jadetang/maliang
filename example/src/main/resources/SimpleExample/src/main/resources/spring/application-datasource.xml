@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+       default-autowire="byName" default-lazy-init="false">
+
+    <bean id="baseDS" class="com.jolbox.bonecp.BoneCPDataSource" abstract="true" destroy-method="close">
+        <property name="acquireIncrement" value="5"/>
+        <property name="lazyInit" value="false"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="240"/>
+        <property name="idleMaxAgeInMinutes" value="60"/>
+        <property name="maxConnectionsPerPartition" value="5"/>
+        <property name="minConnectionsPerPartition" value="1"/>
+        <property name="partitionCount" value="2"/>
+        <property name="statementsCacheSize" value="0"/>
+        <property name="connectionTimeoutInMs" value="5000"/>
+        <property name="acquireRetryAttempts" value="60"></property>
+    </bean>
+
+
+    <!-- vertcia连接池的配置 -->
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" parent="baseDS">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test"></property>
+        <property name="user" value="jade"></property>
+        <property name="password" value="123"></property>
+    </bean>
+
+    <!-- log4jdbc可以将数据源执行的sql将占位符?替换成字符,并以日志打印出来. log4j配置: log4j.logger.jdbc.sqltiming=INFO    详情请看: http://code.google.com/p/rapid-framework/wiki/log4jdbc
+      如oracle示例:
+       原来的sql: select * from user where birth_date = ? and username = ? and age > ?
+       转换后sql: select * from user where birth_date = to_date('2010-08-13','yyyy-mm-dd') and username = 'badqiu' and age > 20
+       此DataSourceSpyInterceptor是扩展了 https://github.com/arthurblake/log4jdbc，由于类的可见性问题，只能放在net.sf.log4jdbc包下
+    -->
+    <bean id="log4jdbcInterceptor" class="net.sf.log4jdbc.DataSourceSpyInterceptor"/>
+    <bean id="dataSourceLog4jdbcAutoProxyCreator"
+          class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="interceptorNames">
+            <list>
+                <value>log4jdbcInterceptor</value>
+            </list>
+        </property>
+        <property name="beanNames">
+            <list>
+                <value>dataSource</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>
