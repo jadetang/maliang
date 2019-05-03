@@ -1,4 +1,4 @@
-#Maliang
+## Maliang
 
 Maliang(马良), the name of this project comes from a character of folk tail in China who has a magical brush by which he can draw any thing and turn it to real thing.
 
@@ -18,7 +18,7 @@ CREATE TABLE `user` (
 Maliang use sql parser to parser DDL, then convert the result to a VelocityContext.   
 The *SourceCodeGenerator.generate(VelocityContext context)* will generate the code with the template and output directory, so acctually you could generate code with your own context builder and your own tempalte.
 
-##Some rules
+## Some rules
 1. **Directroy and File Name**
 The *SourceCodeGenerator* will replace automatically replace the directory path and the file name with the value in VelocityContext. Suppose you have a template file called  ```/${basepackage}/${name}Dao.java```, and in the context the ```${basepackage}``` equals ```com.github.maliang``` and the ```${name}``` equals ```jadetang```, you will get a new file ```/com/github/maliang/jadetangDao.java``` 
 
