@@ -2,7 +2,7 @@
 
 Maliang(马良), the name of this project comes from a character of folk tail in China who has a magical brush by which he can draw any thing and turn it to real thing.
 
-##Motivation
+## Motivation
 In most of J2EE projet, there are a lot of codes are about CRUD which refer to the basic functions of a database or persistence layer in a software system. By using Maliang, you can generate these template codes based on your DDL
 ```
 CREATE TABLE `user` (
