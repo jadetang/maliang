@@ -10,13 +10,11 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
             <version>1.7</version>
         </dependency>
-
         <dependency>
             <groupId>com.github.jsqlparser</groupId>
             <artifactId>jsqlparser</artifactId>
@@ -25,7 +23,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>18.0</version>
+            <version>28.2-jre</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe</groupId>
@@ -45,8 +43,6 @@
             <version>1.6.1</version>
         </dependency>
         <!-- logging END -->
-
-
     </dependencies>
 
     <build>
